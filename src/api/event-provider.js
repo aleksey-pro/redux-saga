@@ -1,0 +1,27 @@
+// Реализуем сторонний сервис, похожий на веб-сокеты
+export const createEventProvider = () => {
+    let value = 0
+  
+    const subscribers = {}
+  
+    const triggerEvent = (event, payload) =>
+      (subscribers[event] || []).map((cb) => cb(payload))
+  
+    // каждую секунду отправляет событие при получении value
+    setInterval(() => {
+      value += 1
+      triggerEvent('value', { payload: value })
+    }, 1000)
+  
+    return {
+      subscribe: (event, handler) => {
+        if (!subscribers[event]) {
+          subscribers[event] = []
+        }
+        subscribers[event].push(handler)
+      },
+      unsubscribe: (event, handler) => {
+        subscribers[event] = subscribers[event].filter((sub) => sub !== handler)
+      },
+    }
+}
