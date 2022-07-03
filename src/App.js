@@ -1,5 +1,5 @@
 import './App.css';
-import { useDispatch, useSelector } from "react-redux"; 
+import { useDispatch, useSelector } from "react-redux";
 import {
   requestUserPosts,
   USER_POSTS_FETCH_REQUESTED,
@@ -16,7 +16,7 @@ function App() {
   // -------  logging sagas --------- //
   const isLoginPending = useSelector((state) => state.user.isLoginPending);
   const error = useSelector((state) => state.user.error);
-  const token = useSelector((state) => state.user.token); 
+  const token = useSelector((state) => state.user.token);
   const filesUploadingProgress = useSelector(state => state.app.filesUploadingProgress);
 
   const handleLoginClick = () => {
@@ -32,27 +32,27 @@ function App() {
     dispatch({ type: LOGOUT })
   }
 
-  // const handleUsernameChange = (event) => {
-  //   dispatch({
-  //     type: CHANGE_USERNAME,
-  //     payload: {
-  //       username: event.target.value,
-  //     },
-  //   })
-  // }
+  const handleUsernameChange = (event) => {
+    dispatch({
+      type: CHANGE_USERNAME,
+      payload: {
+        username: event.target.value,
+      },
+    })
+  }
 
   // -------  end logging sagas --------- //
 
   // const handleClick = () => {
-    // смотрим как будут работать саги при нескольких подряд вызовах
-    // dispatch({ type: USER_POSTS_FETCH_REQUESTED, payload: { userId: 1, actionId: 1 } });
-    // dispatch({ type: USER_POSTS_FETCH_REQUESTED, payload: { userId: 1, actionId: 2 } });
-    // dispatch({ type: USER_POSTS_FETCH_REQUESTED, payload: { userId: 1, actionId: 3 } });
-    // dispatch({ type: USER_POSTS_FETCH_REQUESTED, payload: { userId: 1, actionId: 4 } });
-    
-    // setTimeout(() => {
-    //   dispatch({ type: USER_POSTS_FETCH_REQUESTED, payload: { userId: 1, actionId: 5 } });
-    // }, 1000)
+  // смотрим как будут работать саги при нескольких подряд вызовах
+  // dispatch({ type: USER_POSTS_FETCH_REQUESTED, payload: { userId: 1, actionId: 1 } });
+  // dispatch({ type: USER_POSTS_FETCH_REQUESTED, payload: { userId: 1, actionId: 2 } });
+  // dispatch({ type: USER_POSTS_FETCH_REQUESTED, payload: { userId: 1, actionId: 3 } });
+  // dispatch({ type: USER_POSTS_FETCH_REQUESTED, payload: { userId: 1, actionId: 4 } });
+
+  // setTimeout(() => {
+  //   dispatch({ type: USER_POSTS_FETCH_REQUESTED, payload: { userId: 1, actionId: 5 } });
+  // }, 1000)
   // }
 
   // saga-channel-buffers
@@ -94,14 +94,16 @@ function App() {
         <p>Uploading progress {filesUploadingProgress}%</p>
       </div>
 
-      {/* <div className="app__login-container">
+
+      {/* throttle/debounce */}
+      <div className="app__login-container">
         <form
           size="md"
           type="text"
           placeholder="Username"
           onChange={handleUsernameChange}
         />
-      </div> */}
+      </div>
     </div>
   );
 }

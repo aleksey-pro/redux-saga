@@ -16,8 +16,17 @@ import { eventChannelSaga } from "./store/saga-event-channel";
 import { channelSaga } from "./store/saga-channel";
 import { handleFilesUploading } from './store/saga-channel-upload';
 import { userPostsFetchRequestedWatcherWithBufferSaga } from "./store/sagas-action-channel-with-buffer";
+import * as postsApi from "./api/posts";
+import { sagaThrottleDebounce } from "./store/sagas-throttle-debounce";
 
-const sagaMiddleware = createSagaMiddleware();
+// носновной спопоб импортирования сервисов, функций - использование middleware (напр. имер redux-thunk)
+// в redux-saga для такого импорта есть context, который расширяет middleaware
+// использование  - в sagas-with-action-channel.js
+const sagaMiddleware = createSagaMiddleware({
+  context: {
+    postsApi,
+  }
+});
 
 const store = createStore(rootReducer, compose(
   applyMiddleware(sagaMiddleware),
@@ -32,7 +41,8 @@ const store = createStore(rootReducer, compose(
 // sagaMiddleware.run(eventChannelSaga); // eventChannel flow
 // sagaMiddleware.run(channelSaga); // channel flow
 // sagaMiddleware.run(handleFilesUploading); // uploading, channel flow example
-sagaMiddleware.run(userPostsFetchRequestedWatcherWithBufferSaga); // buffering flow
+// sagaMiddleware.run(userPostsFetchRequestedWatcherWithBufferSaga); // buffering flow
+sagaMiddleware.run(sagaThrottleDebounce); // ThrottleDebounce flow
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -41,7 +51,7 @@ root.render(
     <Provider store={store}>
       <App />
     </Provider>
-  </React.StrictMode> 
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
