@@ -1,4 +1,7 @@
 // БЛОКИРУЮЩИЕ / НЕБЛОКИРУЮЩИЕ САГИ fork/spawn
+// Блокирующий вызов - сага ожидат заверешения yield для совершения нового вызова - call
+// Неблокирующий - fork
+
 import { call, fork, spawn, put } from "redux-saga/effects";
 import { getUserAlbums } from '../api/albums';
 import { getUserPosts } from '../api/posts';

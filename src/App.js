@@ -10,14 +10,22 @@ import {
   USER_POSTS_FETCH_CANCEL,
 } from './store/actions';
 
+import { userPostsFetchRequest } from "./store/redux-toolkit/postsSlice";
+
 function App() {
   const dispatch = useDispatch();
 
   // -------  logging sagas --------- //
-  const isLoginPending = useSelector((state) => state.user.isLoginPending);
-  const error = useSelector((state) => state.user.error);
-  const token = useSelector((state) => state.user.token);
-  const filesUploadingProgress = useSelector(state => state.app.filesUploadingProgress);
+  // const isLoginPending = useSelector((state) => state.user.isLoginPending);
+  // const error = useSelector((state) => state.user.error);
+  // const token = useSelector((state) => state.user.token);
+  // const filesUploadingProgress = useSelector(state => state.app.filesUploadingProgress);
+
+  const handleCancelTask = () => {
+    dispatch({
+      type: USER_POSTS_FETCH_CANCEL,
+    })
+  }
 
   const handleLoginClick = () => {
     dispatch({
@@ -59,7 +67,10 @@ function App() {
   const handleClick = () => {
     try {
       for (let dispatchId = 1; dispatchId <= 4; dispatchId++) {
-        dispatch(requestUserPosts({ userId: 1, actionId: dispatchId }))
+        // dispatch(requestUserPosts({ userId: 1, actionId: dispatchId }));
+        // напишем с помощью redux-toolkit
+        dispatch(userPostsFetchRequest({ userId: 1, actionId: dispatchId }));
+        
       }
     } catch (error) {
       console.log('error', error.message);
@@ -77,28 +88,29 @@ function App() {
     <div className="app__container">
       {/* POSTS */}
       <button onClick={handleClick}>Get posts</button>
-      {/* <button onClick={handleCancelTask}>Cancel task</button> */}
+
+      {/* race-all */}
+      <button onClick={handleCancelTask}>Cancel task</button>
 
       {/* AUTORIZATION */}
       <div className="app__login-container">
         <button onClick={handleLoginClick}>Log in</button>
         <button onClick={handleLogoutClick}>Log out</button>
-        {isLoginPending && <p>Logging in...</p>}
-        {error && <p>Error: {error}</p>}
-        {token && <p>{token}</p>}
+        {/* {isLoginPending && <p>Logging in...</p>} */}
+        {/* {error && <p>Error: {error}</p>}  */}
+        {/* {token && <p>{token}</p>} */}
       </div>
 
       {/* channel канал */}
-      <div className="app__login-container">
+      {/* <div className="app__login-container">
         <button onClick={handleUploadClick}>Upload files</button>
         <p>Uploading progress {filesUploadingProgress}%</p>
-      </div>
+      </div> */}
 
 
       {/* throttle/debounce */}
       <div className="app__login-container">
-        <form
-          size="md"
+        <input
           type="text"
           placeholder="Username"
           onChange={handleUsernameChange}
